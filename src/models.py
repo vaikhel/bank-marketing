@@ -15,7 +15,7 @@ def train_logistic_regression(
   """Train Logistic Regression with preprocessing pipeline."""
   pipeline = Pipeline(steps=[
     ("preprocessor", get_preprocessor(categorical_features, numerical_features)),
-    ("model", LogisticRegression(max_iter=1000))
+    ("model", LogisticRegression(max_iter=1000, class_weight="balanced"))
   ])
   pipeline.fit(X_train, y_train)
   return pipeline
@@ -29,7 +29,7 @@ def train_decision_tree(
   """Train Decision Tree with preprocessing pipeline."""
   pipeline = Pipeline(steps=[
     ("preprocessor", get_preprocessor(categorical_features, numerical_features)),
-    ("model", DecisionTreeClassifier(max_depth=6, random_state=42))
+    ("model", DecisionTreeClassifier(max_depth=6, random_state=42, class_weight="balanced"))
   ])
   pipeline.fit(X_train, y_train)
   return pipeline
@@ -41,11 +41,12 @@ def train_catboost(
 ) -> CatBoostClassifier:
   """Train CatBoost model (handles categorical features natively)."""
   model = CatBoostClassifier(
-    iterations=500,
+    iterations=1000,
     learning_rate=0.1,
     depth=6,
     random_state=42,
-    verbose=0
+    verbose=0,
+    auto_class_weights="Balanced"
   )
   model.fit(X_train, y_train, cat_features=categorical_features)
   return model

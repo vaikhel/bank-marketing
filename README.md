@@ -41,25 +41,26 @@ Three models were trained and compared:
 
 | Model               | Accuracy | F1    | ROC-AUC |
 |---------------------|----------|-------|---------|
-| Logistic Regression | 0.8933   | 0.2815| 0.7717  |
-| Decision Tree       | 0.8919   | 0.2892| 0.7136  |
-| CatBoost            | 0.8974   | 0.3911| 0.8034  |
+| Logistic Regression | 0.7548   | 0.3732| 0.7722  |
+| Decision Tree       | 0.8232   | 0.4196| 0.7461  |
+| CatBoost            | 0.8298   | 0.4541| 0.7912  |
 
 ### Cross-Validation (5-fold, ROC-AUC)
 
 | Model               | Mean ROC-AUC | Std   |
 |---------------------|--------------|-------|
-| Logistic Regression | 0.7654       | 0.0084|
-| Decision Tree       | 0.7082       | 0.0070|
-| CatBoost            | 0.8025       | 0.0093|
+| Logistic Regression | 0.7664       | 0.0081|
+| Decision Tree       | 0.7474       | 0.0107|
+| CatBoost            | 0.7893       | 0.0079|
 
-CatBoost showed the best performance on both the test set and in cross-validation. The relatively low F1 scores are expected due to class imbalance (~11.7% positive class). Low standard deviation in cross-validation indicates stable model performance.
+All models use class balancing (`class_weight="balanced"` / `auto_class_weights="Balanced"`) to better handle the imbalanced dataset (~11.7% positive class). This improved F1 scores at the cost of lower Accuracy.
 
 ## Key Findings
 
+- CatBoost achieved the highest F1 (0.454) and competitive ROC-AUC.
+- Class balancing helped all models better identify clients who subscribe to a term deposit.
 - The most important features according to CatBoost: `month`, `day`, `poutcome`, `contact`, `balance`.
-- Gradient boosting outperformed simpler models on this task.
-- ROC-AUC is a more informative metric than Accuracy given the imbalance.
+- Low standard deviation in cross-validation indicates stable performance.
 
 ## How to Run
 
